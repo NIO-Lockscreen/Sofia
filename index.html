@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="no">
+<html lang="nb-NO">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
@@ -95,8 +95,24 @@
     function displayWord(word){return state.uppercase?String(word).toUpperCase():String(word)}
     function makeEmojiRows(count,emoji){const rowSizes={1:[1],2:[2],3:[3],4:[2,2],5:[3,2],6:[3,3],7:[4,3],8:[4,4]}[count]||[count];return rowSizes.map(size=>Array.from({length:size},()=>emoji))}
     function modeInfo(){return MODES.find(m=>m.id===state.mode)||MODES[1]}
-    function speakPayload(payload,remember=true){if(!payload)return;if(remember)lastSpeechPayload=payload;if(!state.sound||!("speechSynthesis" in window))return;window.speechSynthesis.cancel();if(payload.segments?.length){speakSegments(payload.segments,payload);return}speakOne(payload.text||"",payload)}
-    function speakOne(text,opts={},onDone){if(!text)return;const utter=new SpeechSynthesisUtterance(text);utter.lang="nb-NO";utter.rate=opts.rate||0.82;utter.pitch=opts.pitch||1.08;utter.onend=()=>{if(onDone)onDone()};window.speechSynthesis.speak(utter)}
+    let norwegianVoice=null;
+    function isNorwegianVoice(voice){
+      const lang=String(voice.lang||"").toLowerCase();
+      const name=String(voice.name||"").toLowerCase();
+      return lang==="nb-no"||lang==="no-no"||lang==="nn-no"||lang.startsWith("nb")||lang.startsWith("no")||lang.startsWith("nn")||name.includes("norsk")||name.includes("norwegian")||name.includes("nora");
+    }
+    function loadNorwegianVoice(){
+      if(!("speechSynthesis" in window))return null;
+      const voices=window.speechSynthesis.getVoices?.()||[];
+      norwegianVoice=voices.find(v=>String(v.lang||"").toLowerCase()==="nb-no")||voices.find(v=>String(v.lang||"").toLowerCase()==="no-no")||voices.find(isNorwegianVoice)||null;
+      return norwegianVoice;
+    }
+    if("speechSynthesis" in window){
+      loadNorwegianVoice();
+      window.speechSynthesis.onvoiceschanged=loadNorwegianVoice;
+    }
+    function speakPayload(payload,remember=true){if(!payload)return;if(remember)lastSpeechPayload=payload;if(!state.sound||!("speechSynthesis" in window))return;window.speechSynthesis.cancel();loadNorwegianVoice();if(payload.segments?.length){speakSegments(payload.segments,payload);return}speakOne(payload.text||"",payload)}
+    function speakOne(text,opts={},onDone){if(!text)return;const utter=new SpeechSynthesisUtterance(text);utter.lang="nb-NO";const voice=loadNorwegianVoice();if(voice){utter.voice=voice;utter.lang=voice.lang||"nb-NO"}utter.rate=opts.rate||0.82;utter.pitch=opts.pitch||1.08;utter.onend=()=>{if(onDone)onDone()};window.speechSynthesis.speak(utter)}
     function speakSegments(segments,opts={}){let index=0;const next=()=>{if(index>=segments.length)return;speakOne(segments[index++],opts,()=>window.setTimeout(next,opts.pause??280))};next()}
     function pickUniqueFirstLetters(list,wantedCount){const used=new Set(),picked=[];for(const item of shuffle(list)){if(used.has(item.letter))continue;used.add(item.letter);picked.push(item);if(picked.length>=wantedCount)break}return picked}
     function buildCards(){const sourcePool=state.mode==="count"?NUMBERS:WORDS;const source=state.mode==="letter"?pickUniqueFirstLetters(WORDS,state.pairs):shuffle(sourcePool).slice(0,Math.min(state.pairs,sourcePool.length));const built=[];source.forEach((item,index)=>{const pairId=item.id;if(state.mode==="picture"){built.push({uid:`${pairId}-a-${index}`,pairId,type:"emoji",item});built.push({uid:`${pairId}-b-${index}`,pairId,type:"emoji",item})}if(state.mode==="word"){built.push({uid:`${pairId}-emoji-${index}`,pairId,type:"emoji",item});built.push({uid:`${pairId}-word-${index}`,pairId,type:"word",item})}if(state.mode==="letter"){built.push({uid:`${pairId}-wordpic-${index}`,pairId,type:"wordpic",item});built.push({uid:`${pairId}-letter-${index}`,pairId,type:"letter",item})}if(state.mode==="count"){built.push({uid:`${pairId}-number-${index}`,pairId,type:"number",item});built.push({uid:`${pairId}-quantity-${index}`,pairId,type:"quantity",item})}});return shuffle(built)}

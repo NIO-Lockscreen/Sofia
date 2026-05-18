@@ -26,3 +26,7 @@ A small iPad-friendly Norwegian memory game for learning words, first letters, a
 - Letter mode avoids duplicate first letters in the same round.
 - Letter speech uses clearer pauses: “M. Ordet mus. Starter med M.”
 - Page scrolls normally on iPad.
+
+
+## Norsk TTS
+Appen forsøker nå eksplisitt å velge en norsk stemme (`nb-NO`, `no-NO` eller `nn-NO`) fra nettleserens `speechSynthesis`-stemmer før den snakker. Hvis en iPad fortsatt leser med engelsk stemme, må norsk stemme være installert/tilgjengelig på enheten: Settings → Accessibility → Spoken Content → Voices → Norwegian.
