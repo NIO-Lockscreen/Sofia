@@ -1,0 +1,9 @@
+{
+  "name": "minimemory-learning-game",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Touch-friendly Norwegian memory game for learning words, first letters, and counting.",
+  "scripts": {},
+  "dependencies": {},
+  "devDependencies": {}
+}

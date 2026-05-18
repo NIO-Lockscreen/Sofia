@@ -1,0 +1,9 @@
+{
+  "name": "MiniMemory – lær ord og tall",
+  "short_name": "MiniMemory",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffe9f0",
+  "theme_color": "#ffe9f0",
+  "lang": "no"
+}
