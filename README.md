@@ -30,3 +30,10 @@ A small iPad-friendly Norwegian memory game for learning words, first letters, a
 
 ## Norsk TTS
 Appen forsøker nå eksplisitt å velge en norsk stemme (`nb-NO`, `no-NO` eller `nn-NO`) fra nettleserens `speechSynthesis`-stemmer før den snakker. Hvis en iPad fortsatt leser med engelsk stemme, må norsk stemme være installert/tilgjengelig på enheten: Settings → Accessibility → Spoken Content → Voices → Norwegian.
+
+## Update in this version
+
+- Added **Stavelek** mode: the parent can write/store a word, and the child builds it from correct and extra wrong letters.
+- Added difficulty choices for spelling mode: +1, +3, +5 or +8 extra letters.
+- Added a 30-second no-input hint: the next correct letter gets a sparkle effect.
+- Fullscreen mode now blurs and hides parent-only text fields and the adult menu, preventing the browser text-input fullscreen warning.
