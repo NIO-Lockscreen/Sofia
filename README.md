@@ -37,3 +37,9 @@ Appen forsøker nå eksplisitt å velge en norsk stemme (`nb-NO`, `no-NO` eller 
 - Added difficulty choices for spelling mode: +1, +3, +5 or +8 extra letters.
 - Added a 30-second no-input hint: the next correct letter gets a sparkle effect.
 - Fullscreen mode now blurs and hides parent-only text fields and the adult menu, preventing the browser text-input fullscreen warning.
+
+## Newest update
+
+- Spelling now shows the **whole word** (e.g. all of `LAM`) in the slots before the next word appears — the final letter is rendered and held a moment before moving on.
+- **Double-tap anywhere** to toggle fullscreen, so you no longer have to open the adult menu. The fullscreen button still works too.
+- Hardened the fullscreen text-input warning fix on iPad/iPhone: the app now uses the webkit-prefixed Fullscreen API (detection, request/exit, and the `webkitfullscreenchange` event), and parent text fields are disabled (not just hidden) while in fullscreen, with a focus guard as a safety net.
