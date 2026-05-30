@@ -43,3 +43,6 @@ Appen forsøker nå eksplisitt å velge en norsk stemme (`nb-NO`, `no-NO` eller 
 - Spelling now shows the **whole word** (e.g. all of `LAM`) in the slots before the next word appears — the final letter is rendered and held a moment before moving on.
 - **Double-tap anywhere** to toggle fullscreen, so you no longer have to open the adult menu. The fullscreen button still works too.
 - Hardened the fullscreen text-input warning fix on iPad/iPhone: the app now uses the webkit-prefixed Fullscreen API (detection, request/exit, and the `webkitfullscreenchange` event), and parent text fields are disabled (not just hidden) while in fullscreen, with a focus guard as a safety net.
+- Replaced the **Clapping** toggle with an **Easy mode (Lett modus)** toggle. When easy mode is on, the next letter to tap is shown in **red** in the displayed word in spelling mode. (Clapping now always plays as part of the rewards.)
+- The spelling **streak reward sound now climbs higher with each combo** — a rising arpeggio that adds notes and pitch the longer the streak, with an octave-up finale, for extra dopamine.
+- In **Emoji-staving**, the **"Si igjen"** button now helps her spell: it says the word and then each letter sound slowly (same as tapping the emoji), instead of repeating the task prompt.
