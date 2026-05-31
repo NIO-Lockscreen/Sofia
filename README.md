@@ -46,3 +46,8 @@ Appen forsøker nå eksplisitt å velge en norsk stemme (`nb-NO`, `no-NO` eller 
 - Replaced the **Clapping** toggle with an **Easy mode (Lett modus)** toggle. When easy mode is on, the next letter to tap is shown in **red** in the displayed word in spelling mode. (Clapping now always plays as part of the rewards.)
 - The spelling **streak reward sound now climbs higher with each combo** — a rising arpeggio that adds notes and pitch the longer the streak, with an octave-up finale, for extra dopamine.
 - In **Emoji-staving**, the **"Si igjen"** button now helps her spell: it says the word and then each letter sound slowly (same as tapping the emoji), instead of repeating the task prompt.
+- **Zoom is now disabled** (viewport lock + blocked pinch/double-tap gestures) so stray touches can't zoom the screen and make the game unplayable.
+- New tap-to-hear helpers in spelling mode:
+  - **Easy mode on:** tapping a letter in the shown word (e.g. the red next letter) voices that letter's sound.
+  - **Easy mode off:** tapping the shown word spells the whole word — the word then each letter ("ost … o, s, t").
+  - Tapping the answer slots reads back what she has entered so far (the incomplete word, e.g. "os").
