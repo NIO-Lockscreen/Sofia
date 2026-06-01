@@ -1,9 +1,20 @@
 {
   "name": "MiniMemory – lær ord og tall",
   "short_name": "MiniMemory",
+  "description": "Norsk lærespill for barn: memory, første lyd, telling og stavelek. Alt kjører lokalt på enheten.",
+  "id": "/",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "any",
   "background_color": "#ffe9f0",
   "theme_color": "#ffe9f0",
-  "lang": "no"
+  "lang": "no",
+  "categories": ["education", "kids", "games"],
+  "icons": [
+    { "src": "/icon.svg", "type": "image/svg+xml", "sizes": "any", "purpose": "any" },
+    { "src": "/icon-192.png", "type": "image/png", "sizes": "192x192", "purpose": "any" },
+    { "src": "/icon-512.png", "type": "image/png", "sizes": "512x512", "purpose": "any" },
+    { "src": "/icon-maskable-512.png", "type": "image/png", "sizes": "512x512", "purpose": "maskable" }
+  ]
 }
