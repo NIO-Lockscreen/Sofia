@@ -14,9 +14,49 @@ A small iPad-friendly Norwegian memory game for learning words, first letters, a
 ## Files
 
 - `index.html` – the full app
-- `manifest.webmanifest` – lets iPad add it to the home screen
-- `vercel.json` – static hosting config
-- `package.json` – project metadata only
+- `sw.js` – service worker (offline support)
+- `manifest.webmanifest` – installable app metadata (name, icons, colors)
+- `icon.svg` / `icon-square.svg` – icon sources; `icon-*.png` + `apple-touch-icon.png` are generated from them
+- `vercel.json` – static hosting config + security/privacy headers
+- `scripts/gen-icons.mjs` – regenerates the PNG icons (`npm run icons`)
+- `tests/smoke.spec.js` + `playwright.config.js` – Playwright smoke tests (`npm test`)
+- `.github/workflows/ci.yml` – runs the smoke tests on every push/PR
+- `package.json` – project metadata + test/icon scripts
+
+## Personvern (privacy)
+
+The app is **100 % local**: there is no backend, no analytics, no third-party
+requests, and no account. The child's name, saved spelling words, rounds and
+streaks are stored only in the browser's `localStorage` on the device.
+`vercel.json` ships a Content-Security-Policy with `connect-src 'self'`, so the
+page cannot send data anywhere, plus a `Permissions-Policy` that disables the
+camera, microphone and geolocation.
+
+## Offline / Add to Home Screen
+
+`sw.js` caches the app shell, so once it has been opened once it works fully
+offline (planes, cars, weak Wi-Fi). The manifest provides crisp icons
+(including a maskable one) and an `apple-touch-icon` for a proper home-screen
+icon on iPad/iPhone. When you ship a change, bump `CACHE` in `sw.js` so devices
+pick up the new version.
+
+## First-boot name + parental gate
+
+- On the very first launch the app shows an optional **"Legg inn barnets navn"**
+  dialog. Saving a name makes the celebrations cheer for the child by name;
+  skipping keeps the praise generic. The name can always be changed later in the
+  adult menu.
+- The **Voksenmeny** is now behind a small math gate (a simple addition with
+  three answer choices), following the platform convention for kids' apps, so a
+  child can't accidentally reset progress or delete saved words.
+
+## Accessibility
+
+- The screen-reader live region is scoped to the status message only (it used to
+  wrap the whole app and announce every card re-render).
+- `prefers-reduced-motion` is honored: confetti and the emoji burst are skipped
+  and transitions are reduced for users who ask for less motion.
+- Muted text color was darkened for better contrast.
 
 ## Latest fixes
 
@@ -51,3 +91,18 @@ Appen forsøker nå eksplisitt å velge en norsk stemme (`nb-NO`, `no-NO` eller 
   - **Easy mode on:** tapping a letter in the shown word (e.g. the red next letter) voices that letter's sound.
   - **Easy mode off:** tapping the shown word spells the whole word — the word then each letter ("ost … o, s, t").
   - Tapping the answer slots reads back what she has entered so far (the incomplete word, e.g. "os").
+
+## Launch hardening (this update)
+
+- **10 new words** for ages 3–6 with broad letter/reading coverage (new initial
+  letters d, f, i, j, u, ø and extra practice on rare letters y/ø):
+  `fisk 🐟, is 🍦, dør 🚪, jul 🎄, øye 👁️, fly ✈️, eple 🍎, sky ☁️, løve 🦁, ulv 🐺`.
+- **Offline support** via a service worker + proper installable icons.
+- **First-boot name dialog** (optional) and a **math parental gate** on the adult menu.
+- **Privacy/security headers** (CSP, Permissions-Policy) guaranteeing nothing leaves the device.
+- **Accessibility:** scoped live region, `prefers-reduced-motion`, higher contrast.
+- **TTS robustness:** periodic `resume()` to avoid the speech-synthesis stall, and a
+  hint in the adult menu when no Norwegian voice is installed.
+- **Safe storage:** `saveState` no longer throws in private mode / when storage is full,
+  and old saved data is migrated forward on version bumps instead of being wiped.
+- **Tests + CI:** Playwright smoke tests run on every push/PR.

@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "description": "Touch-friendly Norwegian memory game for learning words, first letters, and counting.",
-  "scripts": {},
+  "scripts": {
+    "test": "playwright test",
+    "icons": "node scripts/gen-icons.mjs"
+  },
   "dependencies": {},
-  "devDependencies": {}
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  }
 }
