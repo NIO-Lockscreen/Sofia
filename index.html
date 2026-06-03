@@ -97,6 +97,7 @@
     .gate-option:active{transform:scale(.95)}
     .tts-hint{margin:0 0 12px;padding:12px 14px;border-radius:18px;background:#fff7d8;border:1px solid rgba(245,158,11,.3);color:#8a5a00;font-weight:850;font-size:14px;line-height:1.4;display:none}
     .tts-hint.show{display:block}
+    .tts-onboard-note{margin:0 0 14px;padding:12px 14px;border-radius:18px;background:#fff7d8;border:1px solid rgba(245,158,11,.3);color:#8a5a00;font-weight:850;font-size:14px;line-height:1.5;text-align:left}
     .privacy-note{margin:12px 0 0;color:var(--muted);font-weight:850;font-size:13px;line-height:1.45}
     @media (prefers-reduced-motion: reduce){
       *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important;scroll-behavior:auto!important}
@@ -157,6 +158,7 @@
       <h2 id="nameDialogTitle">Legg inn barnets navn</h2>
       <p>Navnet brukes til å heie på barnet i feiringen. Helt valgfritt – du kan hoppe over.</p>
       <input class="text-input" id="nameDialogInput" type="text" placeholder="Barnets navn" autocomplete="off" autocapitalize="words" maxlength="24" />
+      <div class="tts-onboard-note">🔊 <strong>Viktig:</strong> Appen bruker norsk tale for å lese ord høyt. For riktig uttale må du aktivere en norsk stemme på enheten selv.<br><span style="font-size:13px;opacity:.85">Innstillinger → Tilgjengelighet → Talt innhold → Stemmer → Norsk</span></div>
       <div class="dialog-actions">
         <button class="btn good" id="nameDialogSave" type="button">Lagre</button>
         <button class="btn secondary" id="nameDialogSkip" type="button">Hopp over</button>
