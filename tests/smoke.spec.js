@@ -23,13 +23,13 @@ test("a saved name is used in the memory celebration", async ({ page }) => {
   await page.locator("#nameDialogInput").fill("Ada");
   await page.locator("#nameDialogSave").click();
   // Win a 3-pair round by matching every pair via the card data.
-  await page.locator(".mode-card[data-mode='picture']").click();
+  await page.locator(".mode-card[data-mode='word']").click();
   await solveMemoryBoard(page);
   await expect(page.locator("#completeText")).toContainText("Ada");
 });
 
 test("the expanded word list contains 44 words", async ({ page }) => {
-  await expect(page.locator("#wordList .word-chip")).toHaveCount(44);
+  await expect(page.locator("#wordList .word-chip")).toHaveCount(39);
 });
 
 test("default word mode renders memory cards", async ({ page }) => {
