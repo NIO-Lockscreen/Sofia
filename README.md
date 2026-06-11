@@ -91,6 +91,8 @@ Appen forsøker nå eksplisitt å velge en norsk stemme (`nb-NO`, `no-NO` eller 
   - **Easy mode on:** tapping a letter in the shown word (e.g. the red next letter) voices that letter's sound.
   - **Easy mode off:** tapping the shown word spells the whole word — the word then each letter ("ost … o, s, t").
   - Tapping the answer slots reads back what she has entered so far (the incomplete word, e.g. "os").
+- **No more overlapping speech when buttons are mashed:** rapidly tapping a word, emoji or letter now cancels the previous spoken phrase (including any queued letter-by-letter segments) before starting the next one, so taps no longer stack up into a jumble of overlapping voices.
+- **Sparkle hint picks the right case:** when the next letter she needs is lowercase but the letter bank also contains an uppercase version of that letter, the 30-second sparkle hint now lands on the **lowercase** choice she should actually press.
 
 ## Launch hardening (this update)
 
