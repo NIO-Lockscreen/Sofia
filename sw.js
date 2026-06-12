@@ -1,6 +1,6 @@
 /* MiniMemory service worker – offline support.
    Bump CACHE when shipping changes so clients pick up the new version. */
-const CACHE = "minimemory-v1";
+const CACHE = "minimemory-v2";
 const CORE_ASSETS = [
   "/",
   "/index.html",
