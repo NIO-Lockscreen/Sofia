@@ -51,6 +51,30 @@ test("spelling mode can be completed and shows success", async ({ page }) => {
   await expect(page.locator("#message")).toContainText("Riktig");
 });
 
+test("title-case spelling never forces an uppercase letter mid-word", async ({ page }) => {
+  await page.locator("#nameDialogSkip").click();
+  await page.locator(".mode-card[data-mode='spell']").click();
+  // Switch to "Abc" (title-case) mode and spell a word with a repeated letter
+  // where case matters past the first slot.
+  await page.evaluate(() => {
+    state.uppercase = false;
+    rememberSpellingWord("PAPPA");
+    startSpellingRound(false, false);
+  });
+  // Expected display per slot: capital first letter, lowercase rest.
+  const expectedSlots = ["P", "a", "p", "p", "a"];
+  for (const ch of expectedSlots) {
+    const tile = page
+      .locator(".letter-choice:not(.used)", { hasText: new RegExp(`^${ch}$`) })
+      .first();
+    // A correctly-cased tile must exist for every slot — including the
+    // lowercase "p" slots, which previously could be left only as "P".
+    await expect(tile).toBeVisible();
+    await tile.click();
+  }
+  await expect(page.locator("#message")).toContainText("Riktig");
+});
+
 test("parental gate guards the adult menu", async ({ page }) => {
   await page.locator("#nameDialogSkip").click();
   await page.locator("#adultBtn").click();
