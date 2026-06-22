@@ -272,13 +272,15 @@
     const NORWEGIAN_VOWELS="aeiouyæøå";
     // Ord som de innebygde norske stemmene uttaler feil. Nøkkel = ordet i lowercase,
     // verdi = fonetisk omskriving som leses riktigere. Lett å utvide ved behov.
-    const TTS_PRONUNCIATION={elisabeth:"Elisabet",sterk:"stærk"};
+    const TTS_PRONUNCIATION={elisabeth:"Elisabet"};
     function applyTtsPronunciation(text){return String(text||"").replace(/[A-Za-zÆØÅæøå]+/g,m=>{const repl=TTS_PRONUNCIATION[m.toLowerCase()];return repl!==undefined?repl:m})}
     // Gjør en uferdig orddel om til noe som høres ut som STARTEN på et ord, ikke
-    // bokstav-for-bokstav. F.eks. "Ep" (av "Eple") → "epe" så stemmen sier "ep…"
-    // i stedet for å stave "E-P". Slutter delen på en konsonant legger vi til en
-    // myk bindevokal slik at synthen leser den som en sammenhengende stavelse.
-    function fragmentToWordSound(partial,target){partial=String(partial||"").toLowerCase();if(!partial)return "";const word=String(target||"").toLowerCase();if(word&&partial===word)return partial;const last=partial[partial.length-1];if(last&&!NORWEGIAN_VOWELS.includes(last))return partial+"e";return partial}
+    // bokstav-for-bokstav. F.eks. "Ep" (av "Eple") → "epp" så stemmen sier "epp"
+    // og ikke staver "E-P". Vi legger IKKE til en ny vokal (det ga feil "epe"):
+    // slutter delen på en konsonant og det finnes en vokal foran, dobler vi
+    // konsonanten så vokalen blir kort og konsonanten tydelig. Rene konsonant-
+    // grupper ("st") leses rått så de høres ut som lyden /st/, ikke "ste".
+    function fragmentToWordSound(partial,target){partial=String(partial||"").toLowerCase();if(!partial)return "";const word=String(target||"").toLowerCase();if(word&&partial===word)return partial;const last=partial[partial.length-1];const hasVowel=[...partial].some(ch=>NORWEGIAN_VOWELS.includes(ch));if(last&&hasVowel&&!NORWEGIAN_VOWELS.includes(last))return partial+last;return partial}
     function speakPayload(payload,remember=true){if(!payload)return;if(remember)lastSpeechPayload=payload;if(!state.sound||!("speechSynthesis" in window))return;const seq=++speechSeq;if(segmentTimer){clearTimeout(segmentTimer);segmentTimer=null}window.speechSynthesis.cancel();loadNorwegianVoice();if(payload.segments?.length){speakSegments(payload.segments,payload,seq);return}speakOne(payload.text||"",payload)}
     function speakOne(text,opts={},onDone){if(!text)return;const utter=new SpeechSynthesisUtterance(applyTtsPronunciation(text));utter.lang="nb-NO";const voice=loadNorwegianVoice();if(voice){utter.voice=voice;utter.lang=voice.lang||"nb-NO"}utter.rate=opts.rate||0.82;utter.pitch=opts.pitch||1.08;utter.onend=()=>{if(onDone)onDone()};window.speechSynthesis.speak(utter)}
     function speakSegments(segments,opts={},seq=speechSeq){let index=0;const next=()=>{if(seq!==speechSeq||index>=segments.length)return;speakOne(segments[index++],opts,()=>{if(seq!==speechSeq)return;segmentTimer=window.setTimeout(next,opts.pause??280)})};next()}
