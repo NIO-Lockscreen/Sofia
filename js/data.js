@@ -51,7 +51,7 @@
       {id:"spell",emoji:"A B C",title:"Stavelek",desc:"Bygg ord med bokstaver",helper:"Trykk bokstavene i riktig rekkefølge."},
       {id:"emojiSpell",emoji:"☀️ _ _ _",title:"Emoji-staving",desc:"Emoji + tomme felt",helper:"Se på emojien og stav ordet."}
     ];
-    const defaultState={mode:"word",pairs:3,sound:true,easyMode:true,uppercase:true,rounds:0,childName:"",onboarded:false,spellingDifficulty:3,spellingWord:"SOL",emojiSpellingWord:"SOL",spellingWords:[...SPELLING_ONLY_WORDS,...WORDS.map(w=>displayWord(w.word))],deletedSpellingWords:[],spellingStreak:0,spellingBestStreak:0,emojiSpellingQueue:[],spellingWordQueue:[],emojiWordQueue:[],emojiWordDistractors:3,emojiWordStreak:0,spellingPraiseAt:0,emojiWordPraiseAt:0,blendStreak:0,blendPraiseAt:0,blendQueue:[],blendDistractors:2};
+    const defaultState={mode:"word",pairs:3,sound:true,easyMode:true,uppercase:true,rounds:0,childName:"",onboarded:false,spellingDifficulty:3,spellingWord:"SOL",emojiSpellingWord:"SOL",spellingWords:[...SPELLING_ONLY_WORDS,...WORDS.map(w=>displayWord(w.word))],deletedSpellingWords:[],spellingStreak:0,spellingBestStreak:0,emojiSpellingQueue:[],spellingWordQueue:[],emojiWordQueue:[],emojiWordDistractors:3,emojiWordStreak:0,spellingPraiseAt:0,emojiWordPraiseAt:0,blendStreak:0,blendPraiseAt:0,blendQueue:[],blendDistractors:2,blendSuperFired:false};
     const storageKey="miniMemoryLearningState_v9";
     const legacyStateKeyRe=/^miniMemoryLearningState_v(\d+)$/;
     function shuffle(list){const copy=[...list];for(let i=copy.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[copy[i],copy[j]]=[copy[j],copy[i]]}return copy}
