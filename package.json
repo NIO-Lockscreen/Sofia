@@ -2,7 +2,7 @@
   "name": "minimemory-learning-game",
   "version": "1.0.0",
   "private": true,
-  "description": "Touch-friendly Norwegian memory game for learning words, first letters, and counting.",
+  "description": "Touch-friendly Norwegian learning game for words, first letters, sounding-out reading, and spelling.",
   "scripts": {
     "test": "playwright test",
     "icons": "node scripts/gen-icons.mjs"

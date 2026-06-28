@@ -1,6 +1,7 @@
-# MiniMemory – lær ord og tall
+# MiniMemory – lær ord og lesing
 
-A small iPad-friendly Norwegian memory game for learning words, first letters, and counting.
+A small iPad-friendly Norwegian learning game for words, first letters,
+sounding-out reading, and spelling.
 
 ## Deploy on Vercel
 
@@ -13,7 +14,24 @@ A small iPad-friendly Norwegian memory game for learning words, first letters, a
 
 ## Files
 
-- `index.html` – the full app
+The app is a static site with no build step. The markup lives in `index.html`;
+the styles and logic are split into small, single-purpose files so each part is
+easy to find and edit:
+
+- `index.html` – markup; links `styles.css` and the `js/*.js` modules
+- `styles.css` – all styles
+- `js/` – the app logic, loaded in order as plain scripts that share one scope:
+  - `data.js` – word/mode data, constants, pure helpers
+  - `state.js` – persistent state load/save + live game state + DOM refs
+  - `speech.js` – Norwegian TTS voice selection and speaking helpers
+  - `feedback.js` – reward sounds, streak fanfares, flame effects
+  - `spelling.js` – Stavelek + Emoji-staving modes
+  - `emojiword.js` – Emoji ordvalg mode
+  - `blend.js` – **Les ordet** (sounding-out reading) mode
+  - `memory.js` – classic memory-pairs modes
+  - `ui.js` – board/controls rendering, status, round orchestration
+  - `fullscreen.js` – fullscreen + input locking
+  - `main.js` – adult gate, onboarding, event wiring and boot (loaded last)
 - `sw.js` – service worker (offline support)
 - `manifest.webmanifest` – installable app metadata (name, icons, colors)
 - `icon.svg` / `icon-square.svg` – icon sources; `icon-*.png` + `apple-touch-icon.png` are generated from them
@@ -57,6 +75,26 @@ pick up the new version.
 - `prefers-reduced-motion` is honored: confetti and the emoji burst are skipped
   and transitions are reduced for users who ask for less motion.
 - Muted text color was darkened for better contrast.
+
+## New: "Les ordet" reading mode (replaces Counting)
+
+The counting game (`Telling`) has been replaced with **Les ordet** – a
+sounding-out / blending mode that targets the gap between *spelling* and
+*reading*. A child who can name the letters but can't yet merge them into a
+word practices exactly that here:
+
+- One word is shown as **tappable letters with no picture on it**, so she has to
+  read rather than guess from an emoji.
+- **Tapping a letter** plays just that letter's sound.
+- The **"Lyd sammen" / read-aloud (🔊) button** sounds the letters out and
+  merges them *faster on each press* (long gaps → tight → the blended word). It
+  deliberately **never leads with the whole word**, so listening can't replace
+  doing the reading – the merged word only appears once the sounds are already
+  tight, which is the skill itself.
+- She then **picks the matching picture**; a correct pick celebrates and
+  confirms the word she just read.
+
+The number of picture choices (2–6) is configurable in the round settings.
 
 ## Latest fixes
 

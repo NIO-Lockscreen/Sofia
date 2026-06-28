@@ -75,6 +75,41 @@ test("title-case spelling never forces an uppercase letter mid-word", async ({ p
   await expect(page.locator("#message")).toContainText("Riktig");
 });
 
+test("reading mode (Les ordet) replaces counting and can be completed", async ({ page }) => {
+  await page.locator("#nameDialogSkip").click();
+  await page.locator(".mode-card[data-mode='blend']").click();
+  // The word is shown as tappable letters with picture choices to read toward.
+  await expect(page.locator(".blend-word .blend-letter").first()).toBeVisible();
+  await expect(page.locator(".blend-choice")).not.toHaveCount(0);
+  // The old counting mode is gone.
+  await expect(page.locator(".mode-card[data-mode='count']")).toHaveCount(0);
+  // Pick the picture that matches the shown word and expect success.
+  const correctId = await page.evaluate(() => blendGame.item.id);
+  await page.evaluate((id) => {
+    const choice = blendGame.choices.find((c) => c.item.id === id);
+    onBlendChoice(choice.id);
+  }, correctId);
+  await expect(page.locator("#message")).toContainText("Riktig");
+});
+
+test("the read-aloud button sounds out letters without giving away the word", async ({ page }) => {
+  await page.locator("#nameDialogSkip").click();
+  await page.locator(".mode-card[data-mode='blend']").click();
+  // Spy on speech and press the helper once (first stage = separated sounds only).
+  const result = await page.evaluate(() => {
+    const calls = [];
+    window.speakPayload = (payload) => calls.push(payload);
+    const target = normalizeSpellingWord(blendGame.item.word);
+    blendGame.blendStage = 0;
+    blendOutLoud();
+    const spoken = calls[calls.length - 1] || {};
+    return { target, segments: spoken.segments || [] };
+  });
+  // It should voice each letter sound and must NOT speak the whole word yet.
+  expect(result.segments.length).toBe(result.target.length);
+  expect(result.segments).not.toContain(result.target.toLowerCase());
+});
+
 test("parental gate guards the adult menu", async ({ page }) => {
   await page.locator("#nameDialogSkip").click();
   await page.locator("#adultBtn").click();
